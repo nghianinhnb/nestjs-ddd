@@ -8,6 +8,7 @@ import { CreateOrderCommandHandler } from './application/commands/create-order.c
 import { ApproveOrderCommandHandler } from './application/commands/approve-order.command';
 import { CancelOrderCommandHandler } from './application/commands/cancel-order.command';
 import { GetOrderByIdQueryHandler, GetCustomerOrdersQueryHandler } from './application/queries/get-order-by-id.query';
+import { OrderCreatedDomainEventHandler } from './application/event-handlers/order-created.handler';
 import { OrderingController } from './presentation/ordering.controller';
 
 const CommandHandlers = [
@@ -18,12 +19,15 @@ const CommandHandlers = [
 
 const QueryHandlers = [GetOrderByIdQueryHandler, GetCustomerOrdersQueryHandler];
 
+const EventHandlers = [OrderCreatedDomainEventHandler];
+
 @Module({
   imports: [TypeOrmModule.forFeature([OrderOrmEntity, OrderItemOrmEntity])],
   controllers: [OrderingController],
   providers: [
     ...CommandHandlers,
     ...QueryHandlers,
+    ...EventHandlers,
     {
       provide: ORDER_REPOSITORY_PORT,
       useClass: OrderRepository,
